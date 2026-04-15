@@ -1,0 +1,1 @@
+// Aqui definiremos o formato dos dados que transitaram entre o app e a API
