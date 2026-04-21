@@ -1,15 +1,33 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../../theme/colors';
 import CustomInput from '../../components/CustomInput';
 import PrimaryButton from '../../components/PrimaryButton';
+import { authService } from '../../services/authService';
 
 export default function LoginScreen({ navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
-        console.log("Tentando logar com:", email, password);
+    const handleLogin = async () => {
+        if (!email || !password) {
+            Alert.alert("Erro", "Por favor, preencha e-mail e senha.");
+            return;
+        }
+
+        try {
+            console.log("Tentando logar com:", email);
+
+            const responseData = await authService.login(email, password);
+
+            console.log("Login com sucesso! Dados formatados:", responseData);
+            Alert.alert("Sucesso", `Bem-vindo, ${responseData.userName}`);
+
+        } catch (error) {
+            console.error("Falha no login:", error.message);
+            Alert.alert("Acesso Negado", error.message);
+        }
     };
 
     return (
@@ -26,7 +44,6 @@ export default function LoginScreen({ navigation }) {
                             resizeMode="contain"
                         />
                     </View>
-                    <Text style={styles.welcomeText}>Bem vindo</Text>
                 </View>
                 <View style={styles.form}>
                     <Text style={styles.label}>E-mail</Text>
