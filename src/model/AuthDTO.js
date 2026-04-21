@@ -20,4 +20,16 @@ export class AuthDTO {
             requiresConsent: apiResponse.consentRequired
         };
     }
+
+    static formatForgotPasswordRequest(email) {
+        return {
+            email: email.trim()
+        };
+    }
+
+    static formatForgotPasswordResponse(apiResponse) {
+        return {
+            message: apiResponse.message
+        };
+    }
 }

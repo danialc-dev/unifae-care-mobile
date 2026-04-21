@@ -37,5 +37,24 @@ export const authService = {
                 }
             }, 1500);
         });
+    },
+
+    forgotPassword: async (email) => {
+        const requestData = AuthDTO.formatForgotPasswordRequest(email);
+        console.log("Enviando para API (Forgot Password):", requestData);
+
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                if (requestData.email) {
+                    // Mock idêntico ao retorno do Insomnia
+                    const mockApiResponse = {
+                        message: "Enviamos um código de 8 caracteres para o e-mail informado. Use-o junto com a nova senha para concluir."
+                    };
+                    resolve(AuthDTO.formatForgotPasswordResponse(mockApiResponse));
+                } else {
+                    reject(new Error("Por favor, forneça um e-mail válido."));
+                }
+            }, 1500); // Simulando delay de rede
+        });
     }
 };

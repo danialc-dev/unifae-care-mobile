@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import LoginScreen from './src/view/screens/LoginScreen';
+import RecuperarSenhaScreen from './src/view/screens/RecuperarSenhaScreen';
 
 const Stack = createStackNavigator();
 
@@ -17,7 +18,11 @@ export default function App() {
           component={LoginScreen}
           options={{ headerShown: false }}
         />
-
+        <Stack.Screen
+          name="RecuperarSenha"
+          component={RecuperarSenhaScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
