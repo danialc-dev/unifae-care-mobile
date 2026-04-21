@@ -72,8 +72,7 @@ export default function NovaSenhaScreen({ route, navigation }) {
                     </View>
 
                     <View style={styles.card}>
-                        <Text style={styles.label}>Nova Senha</Text>
-                        <Text style={styles.emailLabel}>Conta: {email}</Text>
+                        <Text style={styles.label}>Recuperar Conta</Text>
 
                         <CustomInput
                             iconName="lock-closed"
@@ -142,7 +141,6 @@ const styles = StyleSheet.create({
     logoImage: { width: 360, height: 120, marginTop: -20 },
     card: { backgroundColor: colors.white, padding: 20, borderRadius: 12, marginBottom: 20, elevation: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3 },
     label: { fontSize: 12, color: colors.textSecondary, fontWeight: 'bold', marginBottom: 8, letterSpacing: 0.5 },
-    emailLabel: { fontSize: 12, color: colors.primaryDark, marginBottom: 15 },
     feedbackBox: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 8, marginBottom: 4 },
     errorText: { fontSize: 12, color: '#D32F2F', flexShrink: 1 },
     successText: { fontSize: 12, color: colors.primaryDark, flexShrink: 1 },

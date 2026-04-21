@@ -4,7 +4,7 @@ import { View, TextInput, StyleSheet } from 'react-native';
 import { colors } from '../theme/colors';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function CustomInput({ iconName, placeholder, value, onChangeText, secureTextEntry, style }) {
+export default function CustomInput({ iconName, placeholder, value, onChangeText, secureTextEntry, style, ...props }) {
     return (
         <View style={[styles.container, style]}>
             {iconName && (
@@ -17,6 +17,7 @@ export default function CustomInput({ iconName, placeholder, value, onChangeText
                 value={value}
                 onChangeText={onChangeText}
                 secureTextEntry={secureTextEntry}
+                {...props}
             />
         </View>
     );

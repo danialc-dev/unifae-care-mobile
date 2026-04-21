@@ -7,7 +7,6 @@ import CustomInput from '../../components/CustomInput';
 import PrimaryButton from '../../components/PrimaryButton';
 import { authService } from '../../services/authService';
 
-
 const maskEmail = (email) => {
     const [user, domain] = email.split('@');
     if (!domain) return email;
@@ -21,11 +20,9 @@ export default function VerificarCodigoScreen({ route, navigation }) {
     const [code, setCode] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    const [successMessage, setSuccessMessage] = useState('');
 
     const handleVerifyCode = async () => {
         setErrorMessage('');
-        setSuccessMessage('');
 
         if (!code.trim() || code.length < 8) {
             setErrorMessage('Insira o código completo de 8 dígitos.');
@@ -35,10 +32,7 @@ export default function VerificarCodigoScreen({ route, navigation }) {
         setIsLoading(true);
         try {
             await authService.verifyCode(email, code);
-            setSuccessMessage('Código validado! Redirecionando...');
-            setTimeout(() => {
-                navigation.navigate('NovaSenha', { email, code });
-            }, 1000);
+            navigation.navigate('NovaSenha', { email, code }); // CORREÇÃO: navega após validar
         } catch (error) {
             setErrorMessage(error.message);
         } finally {
@@ -65,7 +59,6 @@ export default function VerificarCodigoScreen({ route, navigation }) {
                     <View style={styles.card}>
                         <Text style={styles.label}>Código de Verificação</Text>
 
-                        {/* Confirmação do envio com email mascarado */}
                         <View style={styles.sentBox}>
                             <Ionicons name="checkmark-circle" size={16} color={colors.primaryDark} />
                             <Text style={styles.sentText}>
@@ -81,7 +74,6 @@ export default function VerificarCodigoScreen({ route, navigation }) {
                             onChangeText={(text) => {
                                 setCode(text);
                                 setErrorMessage('');
-                                setSuccessMessage('');
                             }}
                             keyboardType="number-pad"
                             maxLength={8}
@@ -91,13 +83,6 @@ export default function VerificarCodigoScreen({ route, navigation }) {
                             <View style={styles.feedbackBox}>
                                 <Ionicons name="alert-circle" size={16} color="#D32F2F" />
                                 <Text style={styles.errorText}>{errorMessage}</Text>
-                            </View>
-                        ) : null}
-
-                        {successMessage ? (
-                            <View style={styles.feedbackBox}>
-                                <Ionicons name="checkmark-circle" size={16} color={colors.primaryDark} />
-                                <Text style={styles.successText}>{successMessage}</Text>
                             </View>
                         ) : null}
 
@@ -139,7 +124,6 @@ const styles = StyleSheet.create({
     sentEmail: { fontWeight: 'bold', color: colors.primaryDark },
     feedbackBox: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 8, marginBottom: 4 },
     errorText: { fontSize: 12, color: '#D32F2F', flexShrink: 1 },
-    successText: { fontSize: 12, color: colors.primaryDark, flexShrink: 1 },
     infoBox: { flexDirection: 'row', backgroundColor: '#F0F4F1', borderLeftWidth: 4, borderLeftColor: colors.primaryDark, padding: 16, borderRadius: 8, marginBottom: 30 },
     infoIcon: { marginRight: 12, marginTop: 2 },
     infoTextContainer: { flex: 1 },
