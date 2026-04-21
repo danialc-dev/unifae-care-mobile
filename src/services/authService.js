@@ -56,5 +56,17 @@ export const authService = {
                 }
             }, 1500); // Simulando delay de rede
         });
-    }
+    },
+
+    verifyCode: async (email, code) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (code === '12345678') {
+                resolve({ message: "Código válido." });
+            } else {
+                reject(new Error("Código inválido ou expirado."));
+            }
+        }, 1500);
+    });
+},
 };

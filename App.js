@@ -5,7 +5,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import LoginScreen from './src/view/screens/LoginScreen';
-import RecuperarSenhaScreen from './src/view/screens/RecuperarSenhaScreen';
+import RecuperarSenhaEmailScreen from './src/view/screens/RecuperarSenhaScreen'; 
+import VerificarCodigoScreen from './src/view/screens/VerificarCodigoScreen';
+import NovaSenhaScreen from './src/view/screens/NovaSenhaScreen';
 
 const Stack = createStackNavigator();
 
@@ -18,9 +20,23 @@ export default function App() {
           component={LoginScreen}
           options={{ headerShown: false }}
         />
+        
+        {/* Usando a importação corrigida */}
         <Stack.Screen
           name="RecuperarSenha"
-          component={RecuperarSenhaScreen}
+          component={RecuperarSenhaEmailScreen} 
+          options={{ headerShown: false }}
+        />
+        
+        <Stack.Screen 
+          name="VerificarCodigo" 
+          component={VerificarCodigoScreen} 
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="NovaSenha" 
+          component={NovaSenhaScreen} 
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
