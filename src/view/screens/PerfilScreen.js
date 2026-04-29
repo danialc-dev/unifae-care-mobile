@@ -1,0 +1,247 @@
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+
+import { colors } from '../../theme/colors';
+import PrimaryButton from '../../components/PrimaryButton';
+
+export default function PerfilScreen() {
+    const [userData, setUserData] = useState({
+        profile: {
+            id: 5,
+            name: "Maria Aparecida Souza",
+            role: "PATIENT",
+        },
+        responsibleStudent: {
+            name: "Aluno André Lucas",
+        },
+        coordinator: {
+            name: "Coord. Vanessa",
+        },
+        weeklyProgress: {
+            percentCompleted: 0,
+        }
+    });
+
+    // Função auxiliar atualizada para renderizar ícones à esquerda e à direita
+    const renderMenuItem = (title, leftIcon, rightIcon = 'chevron-forward') => (
+        <TouchableOpacity style={styles.menuItem}>
+            <View style={styles.menuItemLeft}>
+                <Ionicons name={leftIcon} size={22} color={colors.primary} style={styles.leftIcon} />
+                <Text style={styles.menuItemText}>{title}</Text>
+            </View>
+            <Ionicons name={rightIcon} size={20} color={colors.textSecondary} />
+        </TouchableOpacity>
+    );
+
+    return (
+        <View style={styles.mainContainer}>
+            <ScrollView style={styles.container} bounces={false}>
+                {/* CABEÇALHO */}
+                <View style={styles.header}>
+                    <Image
+                        source={{ uri: 'https://randomuser.me/api/portraits/women/44.jpg' }}
+                        style={styles.avatar}
+                    />
+                    <Text style={styles.userName}>{userData.profile.name}</Text>
+                    <Text style={styles.userId}>ID: #{userData.profile.id}-REHAB</Text>
+                </View>
+
+                {/* INFORMAÇÕES MÉDICAS */}
+                <View style={styles.infoSection}>
+                    <Text style={styles.infoLabel}>FISIOTERAPEUTA RESPONSÁVEL</Text>
+                    <Text style={styles.infoValue}>{userData.responsibleStudent.name}</Text>
+
+                    <Text style={styles.infoLabel}>COORDENADOR RESPONSÁVEL</Text>
+                    <Text style={styles.infoValue}>{userData.coordinator.name}</Text>
+                </View>
+
+                {/* META SEMANAL */}
+                <View style={styles.infoSection}>
+                    <Text style={styles.infoLabel}>META SEMANAL</Text>
+                    <Text style={styles.infoValue}>{userData.weeklyProgress.percentCompleted}% Concluído</Text>
+                </View>
+
+                {/* MENUS DE CONFIGURAÇÃO */}
+                <View style={styles.menuSection}>
+                    <Text style={styles.sectionTitle}>CONFIGURAÇÕES E SUPORTE</Text>
+
+                    {/* Adicionando os ícones correspondentes aos menus */}
+                    {renderMenuItem('Lembretes', 'alarm-outline')}
+                    {renderMenuItem('Notificações', 'notifications-outline')}
+                    {renderMenuItem('Privacidade e Dados', 'shield-checkmark-outline')}
+
+                    <PrimaryButton
+                        title="Sair"
+                        onPress={() => console.log('Sair pressionado')}
+                        style={styles.logoutButton}
+                        textStyle={styles.logoutButtonText}
+                    />
+                    <Text style={styles.versionText}>V2.4.0</Text>
+                </View>
+            </ScrollView>
+
+            {/* BARRA DE NAVEGAÇÃO INFERIOR (MOCK VISUAL) */}
+            <View style={styles.bottomNav}>
+                <TouchableOpacity style={styles.navItem}>
+                    <Ionicons name="home-outline" size={24} color={colors.textSecondary} />
+                    <Text style={styles.navText}>INÍCIO</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.navItem}>
+                    <Ionicons name="calendar-outline" size={24} color={colors.textSecondary} />
+                    <Text style={styles.navText}>AGENDA</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.navItem}>
+                    <Ionicons name="stats-chart-outline" size={24} color={colors.textSecondary} />
+                    <Text style={styles.navText}>PROGRESSO</Text>
+                </TouchableOpacity>
+
+                {/* Item Ativo - Perfil */}
+                <TouchableOpacity style={[styles.navItem, styles.navItemActive]}>
+                    <Ionicons name="person" size={24} color={colors.primary} />
+                    <Text style={styles.navTextActive}>PERFIL</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    mainContainer: {
+        flex: 1,
+        backgroundColor: colors.background,
+    },
+    container: {
+        flex: 1,
+    },
+    header: {
+        alignItems: 'center',
+        padding: 25,
+        paddingTop: 60, // Substituiu o marginTop para a cor preencher até o topo
+        backgroundColor: colors.primary,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+    },
+    avatar: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        borderWidth: 3,
+        borderColor: colors.white,
+        marginBottom: 10,
+    },
+    userName: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: colors.white,
+    },
+    userId: {
+        fontSize: 14,
+        color: colors.inputBackground,
+    },
+    infoSection: {
+        padding: 20,
+        backgroundColor: colors.white,
+        margin: 15,
+        borderRadius: 10,
+        elevation: 2,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.2,
+        shadowRadius: 1.41,
+    },
+    infoLabel: {
+        fontSize: 12,
+        color: colors.textSecondary,
+        marginBottom: 4,
+        marginTop: 10,
+    },
+    infoValue: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: colors.textPrimary,
+    },
+    menuSection: {
+        paddingHorizontal: 20,
+        paddingTop: 10,
+        paddingBottom: 20,
+    },
+    sectionTitle: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        color: colors.textSecondary,
+        marginBottom: 10,
+    },
+    menuItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: colors.inputBackground,
+    },
+    menuItemLeft: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    leftIcon: {
+        marginRight: 15,
+    },
+    menuItemText: {
+        fontSize: 16,
+        color: colors.textPrimary,
+    },
+    logoutButton: {
+        marginTop: 30,
+        backgroundColor: colors.white,
+        borderWidth: 1.5,
+        borderColor: '#E53935',
+        elevation: 0,
+        shadowOpacity: 0,
+    },
+    logoutButtonText: {
+        color: '#E53935',
+    },
+    versionText: {
+        textAlign: 'center',
+        color: colors.textSecondary,
+        marginTop: 20,
+        fontSize: 12,
+    },
+    /* ESTILOS DA BARRA DE NAVEGAÇÃO (MOCK) */
+    bottomNav: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: colors.white,
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        borderTopWidth: 1,
+        borderColor: '#EFEFEF',
+        paddingBottom: 25, // Espaço extra para evitar o risco inferior do iPhone (SafeArea)
+    },
+    navItem: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+    },
+    navItemActive: {
+        backgroundColor: '#E8F5E9', // Fundo verdinho claro para o item ativo (baseado na sua imagem)
+        borderRadius: 20,
+    },
+    navText: {
+        fontSize: 10,
+        color: colors.textSecondary,
+        marginTop: 4,
+        fontWeight: 'bold',
+    },
+    navTextActive: {
+        fontSize: 10,
+        color: colors.primaryDark,
+        marginTop: 4,
+        fontWeight: 'bold',
+    }
+});

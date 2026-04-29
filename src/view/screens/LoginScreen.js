@@ -26,7 +26,7 @@ export default function LoginScreen({ navigation }) {
             const responseData = await authService.login(email, password);
             console.log("Login com sucesso! Dados formatados:", responseData);
             // Navegar para home/dashboard após login bem-sucedido
-            // navigation.navigate('Home');
+            navigation.navigate('Perfil');
         } catch (error) {
             setErrorMessage(error.message);
         } finally {

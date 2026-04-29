@@ -48,7 +48,7 @@ export default function VerificarCodigoScreen({ route, navigation }) {
                     <View style={styles.topHeader}>
                         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButtonTop}>
                             <Ionicons name="arrow-back" size={20} color={colors.primary} />
-                            <Text style={styles.headerText}>Voltar ao E-mail</Text>
+                            <Text style={styles.headerText}>Voltar</Text>
                         </TouchableOpacity>
                     </View>
 
