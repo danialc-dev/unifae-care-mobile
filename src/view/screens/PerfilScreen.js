@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { colors } from '../../theme/colors';
 import PrimaryButton from '../../components/PrimaryButton';
+import BottomNav from '../../components/BottomNav';
 
 export default function PerfilScreen() {
     const [userData, setUserData] = useState({
@@ -80,30 +81,7 @@ export default function PerfilScreen() {
                     <Text style={styles.versionText}>V2.4.0</Text>
                 </View>
             </ScrollView>
-
-            {/* BARRA DE NAVEGAÇÃO INFERIOR (MOCK VISUAL) */}
-            <View style={styles.bottomNav}>
-                <TouchableOpacity style={styles.navItem}>
-                    <Ionicons name="home-outline" size={24} color={colors.textSecondary} />
-                    <Text style={styles.navText}>INÍCIO</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.navItem}>
-                    <Ionicons name="calendar-outline" size={24} color={colors.textSecondary} />
-                    <Text style={styles.navText}>AGENDA</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.navItem}>
-                    <Ionicons name="stats-chart-outline" size={24} color={colors.textSecondary} />
-                    <Text style={styles.navText}>PROGRESSO</Text>
-                </TouchableOpacity>
-
-                {/* Item Ativo - Perfil */}
-                <TouchableOpacity style={[styles.navItem, styles.navItemActive]}>
-                    <Ionicons name="person" size={24} color={colors.primary} />
-                    <Text style={styles.navTextActive}>PERFIL</Text>
-                </TouchableOpacity>
-            </View>
+            <BottomNav activeMenu="Perfil" />
         </View>
     );
 }
