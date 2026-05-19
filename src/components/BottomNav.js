@@ -2,20 +2,18 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native'; // <-- Importamos o Hook de navegação
+import { useNavigation } from '@react-navigation/native';
 import { colors } from '../theme/colors';
 
 export default function BottomNav({ activeMenu }) {
-    const navigation = useNavigation(); // <-- Instanciamos a navegação
+    const navigation = useNavigation();
 
     const handleNavigation = (menuName) => {
-        // Como ainda não temos todas as telas, vamos navegar apenas para as que existem
-        if (menuName === 'Home' || menuName === 'Perfil') {
-            // Dica: usamos 'navigate' em vez de 'replace' aqui para o usuário poder ir e voltar
-            navigation.navigate(menuName);
-        } else {
-            console.log(`Tela de ${menuName} em construção...`);
-        }
+        // Evita recarregar a tela se o usuário já estiver nela
+        if (activeMenu === menuName) return;
+
+        // Navega para a rota correspondente cadastrada no Stack/Tab Navigator
+        navigation.navigate(menuName);
     };
 
     const renderNavItem = (menuName, iconName, label) => {
@@ -23,12 +21,15 @@ export default function BottomNav({ activeMenu }) {
 
         return (
             <TouchableOpacity
+                key={menuName}
                 style={[styles.navItem, isActive && styles.navItemActive]}
-                onPress={() => handleNavigation(menuName)} // <-- Chamamos a nova função
+                onPress={() => handleNavigation(menuName)}
+                activeOpacity={0.7}
             >
                 <Ionicons
                     name={isActive ? iconName : `${iconName}-outline`}
                     size={24}
+                    // Utilizamos a cor primária padronizada para o ícone ativo
                     color={isActive ? colors.primary : colors.textSecondary}
                 />
                 <Text style={isActive ? styles.navTextActive : styles.navText}>
@@ -40,6 +41,8 @@ export default function BottomNav({ activeMenu }) {
 
     return (
         <View style={styles.bottomNav}>
+            {/* Certifique-se de que os nomes ('Home', 'Exercicios', etc.) sejam exatamente 
+                os nomes das rotas (name="...") configuradas no seu App.js */}
             {renderNavItem('Home', 'home', 'INÍCIO')}
             {renderNavItem('Exercicios', 'barbell', 'EXERCÍCIOS')}
             {renderNavItem('Relatos', 'document-text', 'RELATOS')}
@@ -59,7 +62,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         borderTopWidth: 1,
         borderColor: '#EFEFEF',
-        paddingBottom: 25,
+        paddingBottom: 25, // Respiro inferior para a SafeArea do iPhone
     },
     navItem: {
         alignItems: 'center',
@@ -67,9 +70,10 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         paddingHorizontal: 10,
         borderRadius: 20,
+        minWidth: 65, // Garante uma área de toque uniforme para todas as abas
     },
     navItemActive: {
-        backgroundColor: '#E8F5E9',
+        backgroundColor: '#E8F5E9', // Fundo de destaque suave
     },
     navText: {
         fontSize: 10,
