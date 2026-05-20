@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 
 import { colors } from '../../theme/colors';
 import PrimaryButton from '../../components/PrimaryButton';
 import BottomNav from '../../components/BottomNav';
 
 export default function PerfilScreen() {
+    const [profileImage, setProfileImage] = useState('https://randomuser.me/api/portraits/women/44.jpg');
     const [userData, setUserData] = useState({
         profile: {
             id: 5,
@@ -24,6 +26,30 @@ export default function PerfilScreen() {
         }
     });
 
+    const pickImage = async () => {
+        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (permissionResult.granted === false) {
+            Alert.alert("Permissão necessária", "Você precisa permitir o acesso à galeria para mudar a foto de perfil!");
+            return;
+        }
+
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ['images'],
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 0.8,
+        });
+
+        if (!result.canceled) {
+            setProfileImage(result.assets[0].uri);
+            // TODO: Chamar o backend para enviar a foto (ex: multipart/form-data)
+            // const formData = new FormData();
+            // formData.append('file', { uri: result.assets[0].uri, name: 'profile.jpg', type: 'image/jpeg' });
+            // await exerciseService.uploadProfilePicture(formData);
+        }
+    };
+
     // Função auxiliar atualizada para renderizar ícones à esquerda e à direita
     const renderMenuItem = (title, leftIcon, rightIcon = 'chevron-forward') => (
         <TouchableOpacity style={styles.menuItem}>
@@ -40,10 +66,15 @@ export default function PerfilScreen() {
             <ScrollView style={styles.container} bounces={false}>
                 {/* CABEÇALHO */}
                 <View style={styles.header}>
-                    <Image
-                        source={{ uri: 'https://randomuser.me/api/portraits/women/44.jpg' }}
-                        style={styles.avatar}
-                    />
+                    <TouchableOpacity onPress={pickImage} style={styles.avatarContainer}>
+                        <Image
+                            source={{ uri: profileImage }}
+                            style={styles.avatar}
+                        />
+                        <View style={styles.editIconContainer}>
+                            <Ionicons name="camera" size={16} color={colors.white} />
+                        </View>
+                    </TouchableOpacity>
                     <Text style={styles.userName}>{userData.profile.name}</Text>
                     <Text style={styles.userId}>ID: #{userData.profile.id}-REHAB</Text>
                 </View>
@@ -102,13 +133,34 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
     },
+    avatarContainer: {
+        position: 'relative',
+        marginBottom: 10,
+    },
     avatar: {
         width: 100,
         height: 100,
         borderRadius: 50,
         borderWidth: 3,
         borderColor: colors.white,
-        marginBottom: 10,
+    },
+    editIconContainer: {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        backgroundColor: '#4CAF50',
+        borderRadius: 15,
+        width: 30,
+        height: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 2,
+        borderColor: colors.white,
+        elevation: 3,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 1,
     },
     userName: {
         fontSize: 22,

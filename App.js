@@ -20,9 +20,10 @@ import ExerciciosScreen from './src/view/screens/ExerciciosScreen'; // Tela da L
 import ExercicioScreen from './src/view/screens/ExercicioScreen'; // Tela do Detalhe (Vídeo)
 import FeedbackScreen from './src/view/screens/FeedbackScreen'; // Tela da Escala de Borg
 
+import RelatosScreen from './src/view/screens/RelatosScreen';
+import ProgressoScreen from './src/view/screens/ProgressoScreen';
+
 // Mocks provisórios apenas para as abas que ainda não fizemos
-function RelatosScreen() { return (<SafeAreaView style={styles.mock}><Text>Relatos em breve</Text></SafeAreaView>); }
-function ProgressoScreen() { return (<SafeAreaView style={styles.mock}><Text>Progresso em breve</Text></SafeAreaView>); }
 function TermosDeUsoScreen() { return (<SafeAreaView style={styles.mock}><Text>Termos LGPD</Text></SafeAreaView>); }
 
 const Stack = createStackNavigator();
@@ -76,7 +77,7 @@ export default function App() {
 
         <Stack.Screen name="Perfil" component={PerfilScreen} options={{ headerShown: false }} />
 
-        {/* MOCKS RESTANTES */}
+        {/* TELAS REAIS DE ABA */}
         <Stack.Screen name="Relatos" component={RelatosScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Progresso" component={ProgressoScreen} options={{ headerShown: false }} />
       </Stack.Navigator>

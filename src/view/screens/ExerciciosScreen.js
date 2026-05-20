@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, SafeAreaView, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import BottomNav from '../../components/BottomNav';
@@ -104,7 +104,7 @@ export default function ExerciciosScreen() {
     };
 
     return (
-        <SafeAreaView style={styles.mainContainer}>
+        <View style={styles.mainContainer}>
             <View style={styles.header}>
                 <Text style={styles.headerTitle}>Meus exercícios</Text>
                 <Text style={styles.headerSubtitle}>Acompanhe suas atividades diárias.</Text>
@@ -132,7 +132,7 @@ export default function ExerciciosScreen() {
             </View>
 
             <BottomNav activeMenu="Exercicios" />
-        </SafeAreaView>
+        </View>
     );
 }
 

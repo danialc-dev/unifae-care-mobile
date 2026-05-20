@@ -31,6 +31,12 @@ export default function HomeScreen() {
         }
     };
 
+    const getFormattedDate = () => {
+        const options = { weekday: 'long', day: 'numeric', month: 'long' };
+        const dateString = new Date().toLocaleDateString('pt-BR', options);
+        return dateString.charAt(0).toUpperCase() + dateString.slice(1);
+    };
+
     const feedback = getProgressFeedback(homeData.progress.percentage);
     return (
         <View style={styles.mainContainer}>
@@ -45,6 +51,7 @@ export default function HomeScreen() {
 
                     <View style={styles.headerTextContainer}>
                         <Text style={styles.greetingTitle}>Olá, {homeData.userName}!</Text>
+                        <Text style={styles.dateText}>{getFormattedDate()}</Text>
                         <Text style={styles.greetingSubtitle}>
                             Seu cuidado diário faz toda a diferença na sua recuperação.
                         </Text>
@@ -136,6 +143,12 @@ const styles = StyleSheet.create({
         fontSize: 28,
         fontWeight: 'bold',
         color: colors.primary,
+        marginBottom: 4,
+    },
+    dateText: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: colors.primaryDark,
         marginBottom: 8,
     },
     greetingSubtitle: {

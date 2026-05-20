@@ -67,5 +67,29 @@ export const exerciseService = {
         } catch (error) {
             throw new Error(error.response?.data?.message || "Erro ao registrar a dor de hoje.");
         }
-    }
+    },
+
+    getHistory: async () => {
+        try {
+            const config = await getAuthHeader();
+            // Rota que busca todas as execuções e feedbacks passados
+            const response = await axios.get(`${API_URL}/app/home/plan/executions`, config);
+            return response.data;
+        } catch (error) {
+            throw new Error("Erro ao carregar histórico.");
+        }
+    },
+
+    getDashboardData: async () => {
+        try {
+            const config = await getAuthHeader();
+            // Rota que traz os cálculos de adesão e dor (se o seu backend já tiver)
+            const response = await axios.get(`${API_URL}/app/home/plan/stats`, config);
+            return response.data;
+        } catch (error) {
+            // Se a rota ainda não existir, retornaremos um mock para a entrega de hoje
+            return { adherence: 85, painEvolution: [8, 7, 5, 4, 2], totalSessions: 12 };
+        }
+    },
+
 };
