@@ -71,12 +71,14 @@ export const exerciseService = {
 
     getHistory: async () => {
         try {
-            const config = await getAuthHeader();
-            // Rota que busca todas as execuções e feedbacks passados
-            const response = await axios.get(`${API_URL}/app/home/plan/executions`, config);
-            return response.data;
+            // Como a rota de histórico não existe ainda no backend,
+            // retornamos o histórico local que o usuário salvou no app!
+            const items = await storageService.getLocalHistory();
+            return { items };
         } catch (error) {
-            throw new Error("Erro ao carregar histórico.");
+            console.error("Erro na API getHistory:", error?.response?.data || error.message);
+            const items = await storageService.getLocalHistory();
+            return { items };
         }
     },
 

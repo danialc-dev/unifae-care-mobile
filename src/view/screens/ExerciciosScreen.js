@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import BottomNav from '../../components/BottomNav';
@@ -104,8 +105,9 @@ export default function ExerciciosScreen() {
     };
 
     return (
-        <View style={styles.mainContainer}>
-            <View style={styles.header}>
+        <SafeAreaView style={styles.safeArea} edges={['top']}>
+            <View style={styles.mainContainer}>
+                <View style={styles.header}>
                 <Text style={styles.headerTitle}>Meus exercícios</Text>
                 <Text style={styles.headerSubtitle}>Acompanhe suas atividades diárias.</Text>
             </View>
@@ -131,14 +133,16 @@ export default function ExerciciosScreen() {
                 )}
             </View>
 
-            <BottomNav activeMenu="Exercicios" />
-        </View>
+                <BottomNav activeMenu="Exercicios" />
+            </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
+    safeArea: { flex: 1, backgroundColor: '#F8F9FA' },
     mainContainer: { flex: 1, backgroundColor: '#F8F9FA' },
-    header: { paddingHorizontal: 20, paddingTop: 30, paddingBottom: 20, backgroundColor: '#FFFFFF', borderBottomWidth: 1, borderBottomColor: '#EFEFEF' },
+    header: { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 20, backgroundColor: '#FFFFFF', borderBottomWidth: 1, borderBottomColor: '#EFEFEF' },
     headerTitle: { fontSize: 24, fontWeight: 'bold', color: '#333333' },
     headerSubtitle: { fontSize: 14, color: '#666666', marginTop: 5 },
     listContainer: { padding: 20, paddingBottom: 40 },

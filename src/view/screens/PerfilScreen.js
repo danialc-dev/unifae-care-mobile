@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView, Alert, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { useNavigation } from '@react-navigation/native';
+import { storageService } from '../../services/storageService';
 
 import { colors } from '../../theme/colors';
 import PrimaryButton from '../../components/PrimaryButton';
 import BottomNav from '../../components/BottomNav';
 
 export default function PerfilScreen() {
+    const navigation = useNavigation();
     const [profileImage, setProfileImage] = useState('https://randomuser.me/api/portraits/women/44.jpg');
     const [userData, setUserData] = useState({
         profile: {
@@ -25,6 +28,15 @@ export default function PerfilScreen() {
             percentCompleted: 0,
         }
     });
+
+    const handleLogout = async () => {
+        try {
+            await storageService.deleteToken();
+            navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
+        } catch (error) {
+            Alert.alert("Erro", "Não foi possível sair.");
+        }
+    };
 
     const pickImage = async () => {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -75,23 +87,41 @@ export default function PerfilScreen() {
                             <Ionicons name="camera" size={16} color={colors.white} />
                         </View>
                     </TouchableOpacity>
+
                     <Text style={styles.userName}>{userData.profile.name}</Text>
                     <Text style={styles.userId}>ID: #{userData.profile.id}-REHAB</Text>
                 </View>
 
                 {/* INFORMAÇÕES MÉDICAS */}
                 <View style={styles.infoSection}>
-                    <Text style={styles.infoLabel}>FISIOTERAPEUTA RESPONSÁVEL</Text>
-                    <Text style={styles.infoValue}>{userData.responsibleStudent.name}</Text>
+                    <View style={styles.infoRow}>
+                        <Ionicons name="person-circle-outline" size={24} color={colors.primary} />
+                        <View style={styles.infoTextContainer}>
+                            <Text style={styles.infoLabel}>FISIOTERAPEUTA RESPONSÁVEL</Text>
+                            <Text style={styles.infoValue}>{userData.responsibleStudent.name}</Text>
+                        </View>
+                    </View>
 
-                    <Text style={styles.infoLabel}>COORDENADOR RESPONSÁVEL</Text>
-                    <Text style={styles.infoValue}>{userData.coordinator.name}</Text>
+                    <View style={styles.infoDivider} />
+
+                    <View style={styles.infoRow}>
+                        <Ionicons name="school-outline" size={24} color={colors.primary} />
+                        <View style={styles.infoTextContainer}>
+                            <Text style={styles.infoLabel}>COORDENADOR RESPONSÁVEL</Text>
+                            <Text style={styles.infoValue}>{userData.coordinator.name}</Text>
+                        </View>
+                    </View>
                 </View>
 
                 {/* META SEMANAL */}
                 <View style={styles.infoSection}>
-                    <Text style={styles.infoLabel}>META SEMANAL</Text>
-                    <Text style={styles.infoValue}>{userData.weeklyProgress.percentCompleted}% Concluído</Text>
+                    <View style={styles.infoRow}>
+                        <Ionicons name="flag-outline" size={24} color={colors.primary} />
+                        <View style={styles.infoTextContainer}>
+                            <Text style={styles.infoLabel}>META SEMANAL</Text>
+                            <Text style={styles.infoValue}>{userData.weeklyProgress.percentCompleted}% Concluído</Text>
+                        </View>
+                    </View>
                 </View>
 
                 {/* MENUS DE CONFIGURAÇÃO */}
@@ -104,8 +134,8 @@ export default function PerfilScreen() {
                     {renderMenuItem('Privacidade e Dados', 'shield-checkmark-outline')}
 
                     <PrimaryButton
-                        title="Sair"
-                        onPress={() => console.log('Sair pressionado')}
+                        title="Sair da Conta"
+                        onPress={handleLogout}
                         style={styles.logoutButton}
                         textStyle={styles.logoutButtonText}
                     />
@@ -172,25 +202,39 @@ const styles = StyleSheet.create({
         color: colors.inputBackground,
     },
     infoSection: {
-        padding: 20,
         backgroundColor: colors.white,
-        margin: 15,
-        borderRadius: 10,
+        marginHorizontal: 20,
+        marginTop: 15,
+        borderRadius: 12,
         elevation: 2,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.41,
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+        paddingVertical: 5,
+    },
+    infoRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 15,
+    },
+    infoTextContainer: {
+        marginLeft: 15,
+        flex: 1,
+    },
+    infoDivider: {
+        height: 1,
+        backgroundColor: colors.inputBackground,
+        marginHorizontal: 15,
     },
     infoLabel: {
         fontSize: 12,
         color: colors.textSecondary,
-        marginBottom: 4,
-        marginTop: 10,
+        marginBottom: 2,
     },
     infoValue: {
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: '600',
         color: colors.textPrimary,
     },
     menuSection: {

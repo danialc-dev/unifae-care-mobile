@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { colors } from '../../theme/colors';
 import BottomNav from '../../components/BottomNav';
 import PrimaryButton from '../../components/PrimaryButton';
 
 export default function HomeScreen() {
+    const navigation = useNavigation();
     const [homeData, setHomeData] = useState({
         userName: "Ana",
         dailyPlan: {
@@ -53,13 +55,16 @@ export default function HomeScreen() {
                         <Text style={styles.greetingTitle}>Olá, {homeData.userName}!</Text>
                         <Text style={styles.dateText}>{getFormattedDate()}</Text>
                         <Text style={styles.greetingSubtitle}>
-                            Seu cuidado diário faz toda a diferença na sua recuperação.
-                        </Text>
-                    </View>
-                    <TouchableOpacity style={styles.notificationButton}>
-                        <Ionicons name="notifications-outline" size={24} color={colors.primaryDark} />
-                    </TouchableOpacity>
+                        Seu cuidado diário faz toda a diferença na sua recuperação.
+                    </Text>
                 </View>
+                <TouchableOpacity 
+                    style={styles.notificationButton} 
+                    onPress={() => navigation.navigate('Notificacoes')}
+                >
+                    <Ionicons name="notifications-outline" size={24} color={colors.primaryDark} />
+                </TouchableOpacity>
+            </View>
 
                 {/* CARD: PLANO DE HOJE */}
                 <View style={styles.card}>
@@ -148,7 +153,7 @@ const styles = StyleSheet.create({
     dateText: {
         fontSize: 14,
         fontWeight: 'bold',
-        color: colors.primaryDark,
+        color: colors.primary,
         marginBottom: 8,
     },
     greetingSubtitle: {

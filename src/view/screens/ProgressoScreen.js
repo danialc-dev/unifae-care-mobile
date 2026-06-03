@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import BottomNav from '../../components/BottomNav';
 import { colors } from '../../theme/colors';
@@ -39,16 +40,19 @@ export default function ProgressoScreen() {
 
     if (loading) {
         return (
-            <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
-                <ActivityIndicator size="large" color={colors.primary} />
-                <Text style={{ marginTop: 10, color: '#666' }}>Carregando seu progresso...</Text>
-            </View>
+            <SafeAreaView style={styles.safeArea} edges={['top']}>
+                <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+                    <ActivityIndicator size="large" color={colors.primary} />
+                    <Text style={{ marginTop: 10, color: '#666' }}>Carregando seu progresso...</Text>
+                </View>
+            </SafeAreaView>
         );
     }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
+        <SafeAreaView style={styles.safeArea} edges={['top']}>
+            <View style={styles.container}>
+                <View style={styles.header}>
                 <Text style={styles.headerTitle}>Meu Progresso</Text>
                 <Text style={styles.headerSubtitle}>Veja como está sua evolução.</Text>
             </View>
@@ -109,14 +113,16 @@ export default function ProgressoScreen() {
                 </View>
             </ScrollView>
 
-            <BottomNav activeMenu="Progresso" />
-        </View>
+                <BottomNav activeMenu="Progresso" />
+            </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
+    safeArea: { flex: 1, backgroundColor: '#F8F9FA' },
     container: { flex: 1, backgroundColor: '#F8F9FA' },
-    header: { padding: 25, backgroundColor: '#FFF', borderBottomWidth: 1, borderBottomColor: '#EEE' },
+    header: { padding: 25, paddingTop: 10, backgroundColor: '#FFF', borderBottomWidth: 1, borderBottomColor: '#EEE' },
     headerTitle: { fontSize: 24, fontWeight: 'bold', color: '#333' },
     headerSubtitle: { fontSize: 14, color: '#666' },
     statCard: { backgroundColor: '#FFF', padding: 20, borderRadius: 16, elevation: 3, marginBottom: 20 },

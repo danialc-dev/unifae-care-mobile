@@ -46,7 +46,10 @@ export default function ExercicioScreen() {
             // Pega o ID da execução para o feedback (pode vir como executionId ou id)
             const executionId = response.executionId || response.id;
 
-            navigation.navigate('Feedback', { executionId: executionId });
+            navigation.navigate('Feedback', { 
+                executionId: executionId,
+                exerciseTitle: exercise.title // Passando para o Feedback
+            });
         } catch (error) {
             Alert.alert("Ops!", error.message);
         } finally {

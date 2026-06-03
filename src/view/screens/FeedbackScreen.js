@@ -4,13 +4,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { colors } from '../../theme/colors';
 import { exerciseService } from '../../services/exerciseService';
+import { storageService } from '../../services/storageService';
 
 export default function FeedbackScreen() {
     const navigation = useNavigation();
     const route = useRoute();
 
-    // Recebemos o executionId da tela de exercício
+    // Recebemos o executionId e title da tela de exercício
     const executionId = route.params?.executionId;
+    const exerciseTitle = route.params?.exerciseTitle || "Exercício Concluído";
 
     // Estados do Formulário
     const [selectedEffort, setSelectedEffort] = useState(null); // Vai guardar o número (0, 2, 5, 8, 10)
@@ -41,6 +43,15 @@ export default function FeedbackScreen() {
             } else {
                 console.warn("Nenhum executionId fornecido. Simulando sucesso localmente.");
             }
+
+            // SALVA NO CACHE LOCAL PARA O HISTÓRICO FUNCIONAR SEM ROTA DO BACKEND
+            await storageService.addLocalExecution({
+                executionId: executionId || Math.random(),
+                exerciseTitle: exerciseTitle,
+                score: selectedEffort,
+                notes: observation,
+                performedAt: new Date().toISOString()
+            });
 
             // Sucesso! Volta para a aba de Exercícios (onde o card aparecerá com o check verde)
             Alert.alert("Sucesso!", "Seu feedback foi registrado. Bom descanso!");

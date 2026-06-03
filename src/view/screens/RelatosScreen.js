@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import BottomNav from '../../components/BottomNav';
 import { colors } from '../../theme/colors';
@@ -42,8 +43,9 @@ export default function RelatosScreen() {
     );
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
+        <SafeAreaView style={styles.safeArea} edges={['top']}>
+            <View style={styles.container}>
+                <View style={styles.header}>
                 <Text style={styles.headerTitle}>Meu Histórico</Text>
                 <Text style={styles.headerSubtitle}>Relatos das suas sessões anteriores.</Text>
             </View>
@@ -61,14 +63,16 @@ export default function RelatosScreen() {
                     />
                 )}
             </View>
-            <BottomNav activeMenu="Relatos" />
-        </View>
+                <BottomNav activeMenu="Relatos" />
+            </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
+    safeArea: { flex: 1, backgroundColor: '#F8F9FA' },
     container: { flex: 1, backgroundColor: '#F8F9FA' },
-    header: { padding: 25, backgroundColor: '#FFF', borderBottomWidth: 1, borderBottomColor: '#EEE' },
+    header: { padding: 25, paddingTop: 10, backgroundColor: '#FFF', borderBottomWidth: 1, borderBottomColor: '#EEE' },
     headerTitle: { fontSize: 24, fontWeight: 'bold', color: '#333' },
     headerSubtitle: { fontSize: 14, color: '#666' },
     historyCard: { flexDirection: 'row', marginBottom: 10 },

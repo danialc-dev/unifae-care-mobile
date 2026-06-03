@@ -2,7 +2,8 @@ import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, SafeAreaView, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { storageService } from './src/services/storageService';
 import { colors } from './src/theme/colors';
@@ -22,6 +23,7 @@ import FeedbackScreen from './src/view/screens/FeedbackScreen'; // Tela da Escal
 
 import RelatosScreen from './src/view/screens/RelatosScreen';
 import ProgressoScreen from './src/view/screens/ProgressoScreen';
+import NotificacoesScreen from './src/view/screens/NotificacoesScreen'; // Nova tela de notificações
 
 // Mocks provisórios apenas para as abas que ainda não fizemos
 function TermosDeUsoScreen() { return (<SafeAreaView style={styles.mock}><Text>Termos LGPD</Text></SafeAreaView>); }
@@ -60,28 +62,37 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName={initialRoute}>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator 
+          initialRouteName={initialRoute}
+          screenOptions={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, // Transição suave entre telas
+          }}
+        >
         {/* FLUXO AUTH */}
-        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="RecuperarSenha" component={RecuperarSenhaEmailScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="VerificarCodigo" component={VerificarCodigoScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="NovaSenha" component={NovaSenhaScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="TermosDeUso" component={TermosDeUsoScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="RecuperarSenha" component={RecuperarSenhaEmailScreen} />
+        <Stack.Screen name="VerificarCodigo" component={VerificarCodigoScreen} />
+        <Stack.Screen name="NovaSenha" component={NovaSenhaScreen} />
+        <Stack.Screen name="TermosDeUso" component={TermosDeUsoScreen} />
 
         {/* FLUXO PRINCIPAL (Telas Reais) */}
-        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Exercicios" component={ExerciciosScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="ExercicioDetalhe" component={ExercicioScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Feedback" component={FeedbackScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Exercicios" component={ExerciciosScreen} />
+        <Stack.Screen name="ExercicioDetalhe" component={ExercicioScreen} />
+        <Stack.Screen name="Feedback" component={FeedbackScreen} />
+        <Stack.Screen name="Notificacoes" component={NotificacoesScreen} />
 
-        <Stack.Screen name="Perfil" component={PerfilScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Perfil" component={PerfilScreen} />
 
         {/* TELAS REAIS DE ABA */}
-        <Stack.Screen name="Relatos" component={RelatosScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Progresso" component={ProgressoScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Relatos" component={RelatosScreen} />
+        <Stack.Screen name="Progresso" component={ProgressoScreen} />
       </Stack.Navigator>
     </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 
